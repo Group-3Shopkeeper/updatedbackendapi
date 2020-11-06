@@ -1,16 +1,9 @@
 package com.hardwarevaluewareapi.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,7 +64,7 @@ public class ProductService {
 		documentReference.delete();
     	return product;
     }
-    public ArrayList<Product> getDiscountedProduct() throws InterruptedException, ExecutionException {
+    public List<Product> getDiscountedProduct() throws InterruptedException, ExecutionException {
 		ArrayList<Product> pl = new ArrayList<Product>();
 		ApiFuture<QuerySnapshot> apiFuture = fireStore.collection("Product").orderBy("timestamp", Direction.DESCENDING).limit(10).get();
 		QuerySnapshot querySnapshot = apiFuture.get();
@@ -99,28 +92,11 @@ public class ProductService {
         list = queryi.get().get().toObjects(Product.class);
     	return list;
     }
-    public Product sendImage(MultipartFile file, Product product) throws IOException {
-		  
-		  InputStream serviceAccount=this.getClass().getClassLoader().getResourceAsStream("./serviceAccountKey.json");
-		  Storage storage=StorageOptions.newBuilder().setProjectId("hardwarevalueapi")
-				  .setCredentials(GoogleCredentials.fromStream(serviceAccount)).build().getService();
-		  
-		  HashMap<String,String> hm=new HashMap<>();
-		  hm.put("firebaseStorageDownloadTokens", "3434434343434dfdf");
-		  BlobId blobid=BlobId.of("hardwarevalueapi.appspot.com", file.getOriginalFilename());
-		  BlobInfo blobInfo=BlobInfo.newBuilder(blobid).setContentType("image/jpeg").setMetadata(hm).build();
-		  
-		  File convertedFile=new File(file.getOriginalFilename());
-		  FileOutputStream fos=new FileOutputStream(convertedFile);
-		  fos.write(file.getBytes());
-		  fos.close();
-		  
-		  Blob blob =storage.create(blobInfo,Files.readAllBytes(convertedFile.toPath()));
-		  Bucket bucket = StorageClient.getInstance().bucket("hardwarevalueapi.appspot.com");
-		 
-		  String imageUrl = "https://firebasestorage.googleapis.com/v0/b/hardwarevalueapi.appspot.com/o/"+convertedFile+"?alt=media&token=3434434343434dfdf";
-	      System.out.println("Image Url : "+imageUrl);
-	      product.setImageUrl(imageUrl);
-		  return product;
-	}
+    public List<Product> getProductByName(String productName) throws InterruptedException, ExecutionException {
+    	List<Product> list;
+        CollectionReference collectionReference =  fireStore.collection("Product");
+	    Query queryi = collectionReference.whereEqualTo("name",productName);
+        list = queryi.get().get().toObjects(Product.class);
+    	return list;
+    }
 }

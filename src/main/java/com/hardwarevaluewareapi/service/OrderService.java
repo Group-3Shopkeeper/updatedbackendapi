@@ -1,16 +1,11 @@
 package com.hardwarevaluewareapi.service;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import org.springframework.stereotype.Service;
-import com.google.api.core.ApiFuture;
-import com.google.api.services.storage.Storage.BucketAccessControls.List;
 import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.cloud.firestore.Query;
 import com.hardwarevaluewareapi.bean.Order;
@@ -60,24 +55,5 @@ public class OrderService {
 		else
 			throw new ResourceNotFoundException("order not found"); 
 	}
-
-	public java.util.List<Order> getAllOrders(String currentUserId, String status) throws ResourceNotFoundException, InterruptedException, ExecutionException {
-		
-		java.util.List<Order> list;
-		
-		CollectionReference collectionReference = firestore.collection("Order");
-		
-		Query query = collectionReference.whereEqualTo("userId", currentUserId);
-		
-		Query query1 = query.whereEqualTo("shippingStatus", status);
-		
-		list = query1.get().get().toObjects(Order.class);
-		if(list != null)
-			return list;
-		else
-			throw new ResourceNotFoundException("order not found");
-	}
-
-
 
 }

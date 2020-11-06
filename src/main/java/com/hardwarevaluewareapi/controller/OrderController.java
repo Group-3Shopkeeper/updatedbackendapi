@@ -46,27 +46,15 @@ public class OrderController {
 		else
 			throw new ResourceNotFoundException("order not found");
 	}
-
+	
 	@GetMapping("/history/{currentUserId}")
-	public ResponseEntity<java.util.List<Order>> getOrders(@PathVariable("currentUserId") String currentUserId)
-			throws Exception {
-		// Order order = orderService.getOrders(currentUserId);
+	public ResponseEntity<java.util.List<Order>> getOrders (@PathVariable ("currentUserId") String currentUserId) throws Exception{
+		//Order order = orderService.getOrders(currentUserId);
 		java.util.List<Order> orderList = (java.util.List<Order>) orderService.getOrders(currentUserId);
-		if (orderList != null)
+		if(orderList != null)
 			return new ResponseEntity<java.util.List<Order>>(orderList, HttpStatus.OK);
 		else
 			throw new ResourceNotFoundException("Order not found");
 	}
-
-	@GetMapping("/forAll")
-	public ResponseEntity<java.util.List<Order>> getOrders(@RequestParam("currentUserId") String currentUserId,@RequestParam ("shippingStatus")String status)
-			throws Exception {
-		// Order order = orderService.getOrders(currentUserId);
-		
-		java.util.List<Order> orderList = orderService.getAllOrders(currentUserId, status);
-		if (orderList != null)
-			return new ResponseEntity<java.util.List<Order>>(orderList, HttpStatus.OK);
-		else
-			throw new ResourceNotFoundException("Order not found");
-	}
+	
 }

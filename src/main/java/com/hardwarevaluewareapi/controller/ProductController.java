@@ -81,10 +81,10 @@ public class ProductController {
     }
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteProduct(@PathVariable String productId) throws InterruptedException, ExecutionException, ResourceNotFoundException {
-		Product product =  productService.deleteProduct(productId);
+	public ResponseEntity<?> deleteProduct(@PathVariable String id) throws InterruptedException, ExecutionException, ResourceNotFoundException {
+		Product product =  productService.deleteProduct(id);
 		if(product == null) {
-			throw new ResourceNotFoundException("Not found "+productId);
+			throw new ResourceNotFoundException("Not found "+id);
 		}
 		else
 		  return new ResponseEntity<Product>(product,HttpStatus.OK);
@@ -92,7 +92,7 @@ public class ProductController {
 	}
 	@GetMapping("/discount")
 	public ResponseEntity<List<Product>> getProductByDiscount() throws InterruptedException, ExecutionException, ResourceNotFoundException {
-		ArrayList<Product> productList = productService.getDiscountedProduct();
+		List<Product> productList = productService.getDiscountedProduct();
 		if(productList!=null)
 		{
 			return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);	
@@ -126,4 +126,17 @@ public class ProductController {
 			throw new ResourceNotFoundException("Product Not Found");
 		}	
 	}
+	@GetMapping("/p/{productName}")
+	public ResponseEntity<List<Product>> getProductByName(@PathVariable String productName) throws ResourceNotFoundException, InterruptedException, ExecutionException {
+		List<Product> productList = productService.getProductByName(productName);
+		if(productList!=null)
+		{
+			return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);	
+		}
+		else
+		{
+			throw new ResourceNotFoundException("Product Not Found");
+		}	
+	}
+	
 }
