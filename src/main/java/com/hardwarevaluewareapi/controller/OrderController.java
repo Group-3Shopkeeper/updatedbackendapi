@@ -1,5 +1,7 @@
 package com.hardwarevaluewareapi.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.api.services.storage.Storage.BucketAccessControls.List;
 import com.hardwarevaluewareapi.bean.Order;
+import com.hardwarevaluewareapi.bean.PurchaseOrder;
 import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 import com.hardwarevaluewareapi.service.OrderService;
 
@@ -56,5 +59,15 @@ public class OrderController {
 		else
 			throw new ResourceNotFoundException("Order not found");
 	}
+	
+	@GetMapping("/orderHistory/{shopKeeperId}")
+	public ResponseEntity<ArrayList<PurchaseOrder>> getPurchaseOrder (@PathVariable ("shopKeeperId") String shopKeeperId) throws Exception{
+		ArrayList<PurchaseOrder> orderList = orderService.getPurchaseOrders(shopKeeperId);
+		if(orderList != null)
+			return new ResponseEntity<ArrayList<PurchaseOrder>>(orderList, HttpStatus.OK);
+		else
+			throw new ResourceNotFoundException("Order not found");
+	}
+	
 	
 }
