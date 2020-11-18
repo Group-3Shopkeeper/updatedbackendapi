@@ -1,14 +1,24 @@
 package com.hardwarevaluewareapi.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import org.springframework.stereotype.Service;
+
+import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.Query.Direction;
 import com.hardwarevaluewareapi.bean.Order;
+import com.hardwarevaluewareapi.bean.OrderItems;
+import com.hardwarevaluewareapi.bean.Product;
+import com.hardwarevaluewareapi.bean.PurchaseOrder;
 import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 
 @Service
@@ -54,6 +64,42 @@ public class OrderService {
 			return list;
 		else
 			throw new ResourceNotFoundException("order not found"); 
+	}
+	public ArrayList<PurchaseOrder> getPurchaseOrders(String shopkeeperId) throws InterruptedException, ExecutionException {
+		ArrayList<PurchaseOrder> purchaseOrdersList = new ArrayList<PurchaseOrder>();
+		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereEqualTo("shippingStatus","placed")
+				.get();
+		QuerySnapshot querySnapshot = apiFuture.get();
+		List<QueryDocumentSnapshot> documentSnapshotList = querySnapshot.getDocuments();
+		
+		for (QueryDocumentSnapshot document : documentSnapshotList) {
+			double totalAmount = 0;
+			boolean status = false;
+			Order order=document.toObject(Order.class);
+			System.out.println(order.getOrderId());
+			ArrayList<OrderItems> orderItemList = order.getOrderItem();
+			ArrayList<OrderItems> itemList = new ArrayList<>(3);
+			for(OrderItems orderItems : orderItemList) {
+				if(orderItems.getShopKeeperId().equals(shopkeeperId)) {
+					status = true;
+				    totalAmount = totalAmount + (orderItems.getPrice()*orderItems.getQty());
+				    itemList.add(orderItems);
+				}
+			}
+			if(status) {
+				PurchaseOrder pOrder = new PurchaseOrder();
+				pOrder.setOrderDate(order.getDate());
+				pOrder.setOrderId(order.getOrderId());
+				pOrder.setTotalAmount(totalAmount);
+				pOrder.setOrderItemList(itemList);
+				purchaseOrdersList.add(pOrder);
+				status = false;
+			}
+				
+	}
+		
+		return purchaseOrdersList;
+		
 	}
 
 }
