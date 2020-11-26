@@ -37,6 +37,18 @@ public class FavoriteController {
 	public Favorite saveFavourite(@RequestBody Favorite favorite) throws Exception {
 		return favoriteService.saveFavorite(favorite);
 	}
+	
+	@GetMapping("/{currentUserId}/{categoryId}")
+	public ResponseEntity<List<Favorite>> getFavoriteByCategory(@PathVariable("currentUserId") String currentUserId,
+			@PathVariable("categoryId") String categoryId) throws ResourceNotFoundException, InterruptedException, ExecutionException {
+		List<Favorite> favoriteList = favoriteService.getFavoriteByCategory(currentUserId, categoryId);
+		if (favoriteList != null) {
+			return new ResponseEntity<List<Favorite>>(favoriteList, HttpStatus.OK);
+		} else {
+			throw new ResourceNotFoundException("Product Not Found");
+		}
+
+	}
 
 	@GetMapping("/{userId}")
 	public ResponseEntity<List<Favorite>> getFavourite(@PathVariable String userId)
