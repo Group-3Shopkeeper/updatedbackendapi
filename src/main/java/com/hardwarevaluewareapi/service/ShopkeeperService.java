@@ -17,9 +17,7 @@ public class ShopkeeperService {
 			 String imageUrl=sendImage.sendImageCode(file);
 			 shopkeeper.setImageUrl(imageUrl);
 			 Firestore firestoredatabase=FirestoreClient.getFirestore();
-			 String storeId=firestoredatabase.collection("Store").document().getId().toString();
-			 shopkeeper.setShopKeeperId(storeId);
-			 firestoredatabase.collection("Store").document(storeId).set(shopkeeper);
+			 firestoredatabase.collection("Store").document(shopkeeper.getShopKeeperId()).set(shopkeeper);
 			 return shopkeeper;
 	      }
 		  

@@ -32,7 +32,8 @@ public class UserController {
    		 @RequestParam("address") String address,
    		 @RequestParam("mobile") String mobile,
    		 @RequestParam("email") String email,
-   		 @RequestParam("token") String token) throws Exception{
+   		 @RequestParam("token") String token,
+   		 @RequestParam("userId") String userId) throws Exception{
    	 if(file.isEmpty())
   		  throw new Exception();
    	 User user = new User();
@@ -41,6 +42,7 @@ public class UserController {
    	 user.setMobile(mobile);
    	 user.setEmail(email);
    	 user.setToken(token);
+   	 user.setUserId(userId);
    	 User u=userService.saveUser(file,user);
    	 return new ResponseEntity<User>(u,HttpStatus.OK);
     }

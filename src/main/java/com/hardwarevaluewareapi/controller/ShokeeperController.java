@@ -28,7 +28,8 @@ public class ShokeeperController {
     		 @RequestParam("contactNumber") String contactNumber,
     		 @RequestParam("address") String address,
     		 @RequestParam("email") String email,
-    		 @RequestParam("token") String token) throws Exception{
+    		 @RequestParam("token") String token,
+    		 @RequestParam("shopKeeperId")String shopKeeperId) throws Exception{
     	 if(file.isEmpty())
    		  throw new Exception();
     	 Shopkeeper shopkeeper = new Shopkeeper();
@@ -37,6 +38,7 @@ public class ShokeeperController {
     	 shopkeeper.setAddress(address);
     	 shopkeeper.setEmail(email);
     	 shopkeeper.setToken(token);
+    	 shopkeeper.setShopKeeperId(shopKeeperId);
     	 Shopkeeper s=shopkeeperService.saveStore(file,shopkeeper);
     	 return new ResponseEntity<Shopkeeper>(s,HttpStatus.OK);
      }
