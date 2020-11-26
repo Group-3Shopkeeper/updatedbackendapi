@@ -30,11 +30,16 @@ public class ShopkeeperService {
 			 return shopkeeper;	 
 		 }
    	
-		public Shopkeeper updateStore(MultipartFile file, Shopkeeper shopkeeper) throws IOException, InterruptedException, Exception {
-		
-		    String imageUrl=sendImage.sendImageCode(file);
+     	public Shopkeeper updateStore(MultipartFile file, Shopkeeper shopkeeper) throws IOException, InterruptedException, Exception {
+    		
+			String imageUrl=sendImage.sendImageCode(file);
 		    shopkeeper.setImageUrl(imageUrl);
 	        Firestore firestoredatabase=FirestoreClient.getFirestore();
+	        firestoredatabase.collection("Store").document(shopkeeper.getShopKeeperId()).set(shopkeeper);
+		    return shopkeeper;
+		}
+		public Shopkeeper updateStoreWithoutImage(Shopkeeper shopkeeper) throws IOException, InterruptedException, Exception {
+			Firestore firestoredatabase=FirestoreClient.getFirestore();
 	        firestoredatabase.collection("Store").document(shopkeeper.getShopKeeperId()).set(shopkeeper);
 		    return shopkeeper;
 		}

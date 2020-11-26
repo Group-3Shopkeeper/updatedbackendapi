@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,7 +51,7 @@ public class ShokeeperController {
 	@PostMapping("/update")
     public ResponseEntity<?> updateStore(@RequestParam("file") MultipartFile file,
     		@RequestParam("shopName") String shopName,
-    		@RequestParam("shopkeeperId") String shopkeeperId,
+    		@RequestParam("shopKeeperId") String shopKeeperId,
     		@RequestParam("contactNumber") String contactNumber,
     		@RequestParam("address") String address,
     		@RequestParam("email") String email,
@@ -63,9 +63,14 @@ public class ShokeeperController {
 	   	 shopkeeper.setShopName(shopName);
 	   	 shopkeeper.setAddress(address);
 	   	 shopkeeper.setEmail(email);
-	   	 shopkeeper.setShopKeeperId(shopkeeperId);
+	   	 shopkeeper.setShopKeeperId(shopKeeperId);
 	   	 shopkeeper.setToken(token);
 	   	 Shopkeeper shop=shopkeeperService.updateStore(file, shopkeeper);
+	   	 return new ResponseEntity<Shopkeeper>(shop,HttpStatus.OK);
+    }
+	@PostMapping("/update/withoutImage")
+    public ResponseEntity<?> updateStoreWithoutImage(@RequestBody Shopkeeper shopkeeper ) throws Exception{
+	   	 Shopkeeper shop=shopkeeperService.updateStoreWithoutImage(shopkeeper);
 	   	 return new ResponseEntity<Shopkeeper>(shop,HttpStatus.OK);
     }
 	@DeleteMapping("/{id}")

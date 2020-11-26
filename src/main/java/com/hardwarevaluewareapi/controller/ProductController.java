@@ -1,6 +1,4 @@
 package com.hardwarevaluewareapi.controller;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -11,12 +9,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.hardwarevaluewareapi.bean.Cart;
 import com.hardwarevaluewareapi.bean.Product;
 import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 import com.hardwarevaluewareapi.service.ProductService;
@@ -62,6 +59,7 @@ public class ProductController {
     		@RequestParam("name") String name,
     		@RequestParam("price") double price,
     		@RequestParam("discount") double discount,
+    		@RequestParam("shopKeeperId") String shopKeeperId,
     		@RequestParam("brand") String brand,
     		@RequestParam("categoryId") String categoryId,
     		@RequestParam("description") String description,
@@ -73,10 +71,19 @@ public class ProductController {
 	   	 product.setName(name);
 	   	 product.setPrice(price);
 	   	 product.setDescription(description);
+	   	 product.setDiscount(discount);
 	   	 product.setProductId(productId);
 	   	 product.setQtyInStock(qtyInStock);
+	   	 product.setShopKeeperId(shopKeeperId);
 	   	 product.setCategoryId(categoryId);
 	   	 Product p=productService.updateProduct(file, product);
+	   	 return new ResponseEntity<Product>(p,HttpStatus.OK);
+    }
+	
+	@PostMapping("/update/withoutImage")
+    public ResponseEntity<?> updateProductWithoutImage(@RequestBody Product product) throws Exception{
+	   
+	   	 Product p=productService.updateProductWithoutImage(product);
 	   	 return new ResponseEntity<Product>(p,HttpStatus.OK);
     }
 
@@ -126,9 +133,9 @@ public class ProductController {
 			throw new ResourceNotFoundException("Product Not Found");
 		}	
 	}
-	@GetMapping("/p/{productName}")
-	public ResponseEntity<List<Product>> getProductByName(@PathVariable String productName) throws ResourceNotFoundException, InterruptedException, ExecutionException {
-		List<Product> productList = productService.getProductByName(productName);
+	@GetMapping("/t/{shopKeeperId}/{categoryId}")
+	public ResponseEntity<List<Product>> getProductByCategoryAndShopkeeper(@PathVariable("categoryId") String categoryId,@PathVariable("shopKeeperId") String shopKeeperId) throws ResourceNotFoundException, InterruptedException, ExecutionException {
+		List<Product> productList = productService.getProductByCategoryAndShopkeeper(categoryId,shopKeeperId);
 		if(productList!=null)
 		{
 			return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);	
@@ -138,5 +145,29 @@ public class ProductController {
 			throw new ResourceNotFoundException("Product Not Found");
 		}	
 	}
+	@GetMapping("/p/{name}")
+	public ResponseEntity<List<Product>> getProductByName(@PathVariable("name") String name) throws ResourceNotFoundException, InterruptedException, ExecutionException {
+		List<Product> productList = productService.getProductByName(name);
+		if(productList!=null)
+		{
+			return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);	
+		}
+		else
+		{
+			throw new ResourceNotFoundException("Product Not Found");
+		}	
+	}
+	@GetMapping("/{shopKeeperId}/{name}")
+	public ResponseEntity<List<Product>> searchProductByName(@PathVariable("shopKeeperId") String shopKeeperId ,@PathVariable("name") String name)
+			throws InterruptedException, ExecutionException, ResourceNotFoundException {
+		List<Product> productList = productService.searchProductByName(shopKeeperId,name);
+		if (productList != null) {
+			return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);
+		} else {
+			throw new ResourceNotFoundException("Product Not Found");
+		}
+	}
+	
+	
 	
 }
