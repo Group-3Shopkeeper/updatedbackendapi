@@ -37,4 +37,14 @@ public class FavoriteService {
 			documentReference.delete();
 	    	return favorite;
 	  }
+	public List<Favorite> getFavoriteByCategory(String currentUserId, String categoryId) throws InterruptedException, ExecutionException {
+		
+		List<Favorite> list;
+		CollectionReference collectionReference = fireStore.collection("Favourite");
+		Query query = collectionReference.whereEqualTo("userId", currentUserId);
+		Query query2 = query.whereEqualTo("categoryId", categoryId);
+
+		list = query2.get().get().toObjects(Favorite.class);
+		return list;
+	}
 }
