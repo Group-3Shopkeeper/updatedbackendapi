@@ -68,6 +68,13 @@ public class OrderController {
 		else
 			throw new ResourceNotFoundException("Order not found");
 	}
-	
+	@GetMapping("/newOrder/{shopKeeperId}")
+	public ResponseEntity<ArrayList<PurchaseOrder>> getNewPurchaseOrder (@PathVariable ("shopKeeperId") String shopKeeperId) throws Exception{
+		ArrayList<PurchaseOrder> orderList = orderService.getNewPurchaseOrders(shopKeeperId);
+		if(orderList != null)
+			return new ResponseEntity<ArrayList<PurchaseOrder>>(orderList, HttpStatus.OK);
+		else
+			throw new ResourceNotFoundException("Order not found");
+	}
 	
 }

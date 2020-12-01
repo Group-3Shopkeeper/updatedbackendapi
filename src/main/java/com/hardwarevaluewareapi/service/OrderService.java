@@ -102,4 +102,40 @@ public class OrderService {
 		
 	}
 
+	public ArrayList<PurchaseOrder> getNewPurchaseOrders(String shopKeeperId) throws InterruptedException, ExecutionException {
+		ArrayList<PurchaseOrder> newPurchaseOrdersList = new ArrayList<PurchaseOrder>();
+		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereEqualTo("shippingStatus","on the way")
+				.get();
+		QuerySnapshot querySnapshot = apiFuture.get();
+		List<QueryDocumentSnapshot> documentSnapshotList = querySnapshot.getDocuments();
+		
+		for (QueryDocumentSnapshot document : documentSnapshotList) {
+			double totalAmount = 0;
+			boolean status = false;
+			Order order=document.toObject(Order.class);
+			System.out.println(order.getOrderId());
+			ArrayList<OrderItems> orderItemList = order.getOrderItem();
+			ArrayList<OrderItems> itemList = new ArrayList<>(3);
+			for(OrderItems orderItems : orderItemList) {
+				if(orderItems.getShopKeeperId().equals(shopKeeperId)) {
+					status = true;
+				    totalAmount = totalAmount + (orderItems.getPrice()*orderItems.getQty());
+				    itemList.add(orderItems);
+				}
+			}
+			if(status) {
+				PurchaseOrder pOrder = new PurchaseOrder();
+				pOrder.setOrderDate(order.getDate());
+				pOrder.setOrderId(order.getOrderId());
+				pOrder.setTotalAmount(totalAmount);
+				pOrder.setOrderItemList(itemList);
+				newPurchaseOrdersList.add(pOrder);
+				status = false;
+			}
+				
+	}
+		
+		return newPurchaseOrdersList;
+		
+   }
 }
