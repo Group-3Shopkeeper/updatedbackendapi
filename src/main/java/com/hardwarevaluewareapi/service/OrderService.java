@@ -50,43 +50,63 @@ public class OrderService {
 		return order;
 	}
 
-	public java.util.List<Order> getOrders(String currentUserId) throws InterruptedException, ExecutionException, ResourceNotFoundException {
+	public java.util.List<Order> getOrders(String currentUserId)
+			throws InterruptedException, ExecutionException, ResourceNotFoundException {
 		java.util.List<Order> list;
 		CollectionReference collectionReference = firestore.collection("Order");
-		
-		Query query = collectionReference.whereIn("shippingStatus",Arrays.asList("cancelled","delivered"));
-		
+
+		Query query = collectionReference.whereIn("shippingStatus", Arrays.asList("cancelled", "delivered"));
+
 		Query query1 = query.whereEqualTo("userId", currentUserId);
-		
+
 		list = query1.get().get().toObjects(Order.class);
-		
-		if(list != null)
+
+		if (list != null)
 			return list;
 		else
-			throw new ResourceNotFoundException("order not found"); 
+			throw new ResourceNotFoundException("order not found");
 	}
-	public ArrayList<PurchaseOrder> getPurchaseOrders(String shopkeeperId) throws InterruptedException, ExecutionException {
+
+	public List<Order> getPlacedOrder(String currentUserId) throws InterruptedException, ExecutionException, ResourceNotFoundException {
+		List<Order> list;
+		CollectionReference collectionReference = firestore.collection("Order");
+		
+		Query query = collectionReference.whereEqualTo("userId", currentUserId);
+		
+		Query query2 = query.whereEqualTo("shippingStatus", "Placed");
+		
+		list = query2.get().get().toObjects(Order.class);
+		
+		if (list != null) 
+			return list;
+		else 
+		throw new ResourceNotFoundException("Order not Found");	
+		
+	}
+
+	public ArrayList<PurchaseOrder> getPurchaseOrders(String shopkeeperId)
+			throws InterruptedException, ExecutionException {
 		ArrayList<PurchaseOrder> purchaseOrdersList = new ArrayList<PurchaseOrder>();
-		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereEqualTo("shippingStatus","placed")
+		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereEqualTo("shippingStatus", "placed")
 				.get();
 		QuerySnapshot querySnapshot = apiFuture.get();
 		List<QueryDocumentSnapshot> documentSnapshotList = querySnapshot.getDocuments();
-		
+
 		for (QueryDocumentSnapshot document : documentSnapshotList) {
 			double totalAmount = 0;
 			boolean status = false;
-			Order order=document.toObject(Order.class);
+			Order order = document.toObject(Order.class);
 			System.out.println(order.getOrderId());
 			ArrayList<OrderItems> orderItemList = order.getOrderItem();
 			ArrayList<OrderItems> itemList = new ArrayList<>(3);
-			for(OrderItems orderItems : orderItemList) {
-				if(orderItems.getShopKeeperId().equals(shopkeeperId)) {
+			for (OrderItems orderItems : orderItemList) {
+				if (orderItems.getShopKeeperId().equals(shopkeeperId)) {
 					status = true;
-				    totalAmount = totalAmount + (orderItems.getPrice()*orderItems.getQty());
-				    itemList.add(orderItems);
+					totalAmount = totalAmount + (orderItems.getPrice() * orderItems.getQty());
+					itemList.add(orderItems);
 				}
 			}
-			if(status) {
+			if (status) {
 				PurchaseOrder pOrder = new PurchaseOrder();
 				pOrder.setOrderDate(order.getDate());
 				pOrder.setOrderId(order.getOrderId());
@@ -95,35 +115,36 @@ public class OrderService {
 				purchaseOrdersList.add(pOrder);
 				status = false;
 			}
-				
-	}
-		
+
+		}
+
 		return purchaseOrdersList;
-		
+
 	}
 
-	public ArrayList<PurchaseOrder> getNewPurchaseOrders(String shopKeeperId) throws InterruptedException, ExecutionException {
+	public ArrayList<PurchaseOrder> getNewPurchaseOrders(String shopKeeperId)
+			throws InterruptedException, ExecutionException {
 		ArrayList<PurchaseOrder> newPurchaseOrdersList = new ArrayList<PurchaseOrder>();
-		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereEqualTo("shippingStatus","on the way")
+		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereEqualTo("shippingStatus", "on the way")
 				.get();
 		QuerySnapshot querySnapshot = apiFuture.get();
 		List<QueryDocumentSnapshot> documentSnapshotList = querySnapshot.getDocuments();
-		
+
 		for (QueryDocumentSnapshot document : documentSnapshotList) {
 			double totalAmount = 0;
 			boolean status = false;
-			Order order=document.toObject(Order.class);
+			Order order = document.toObject(Order.class);
 			System.out.println(order.getOrderId());
 			ArrayList<OrderItems> orderItemList = order.getOrderItem();
 			ArrayList<OrderItems> itemList = new ArrayList<>(3);
-			for(OrderItems orderItems : orderItemList) {
-				if(orderItems.getShopKeeperId().equals(shopKeeperId)) {
+			for (OrderItems orderItems : orderItemList) {
+				if (orderItems.getShopKeeperId().equals(shopKeeperId)) {
 					status = true;
-				    totalAmount = totalAmount + (orderItems.getPrice()*orderItems.getQty());
-				    itemList.add(orderItems);
+					totalAmount = totalAmount + (orderItems.getPrice() * orderItems.getQty());
+					itemList.add(orderItems);
 				}
 			}
-			if(status) {
+			if (status) {
 				PurchaseOrder pOrder = new PurchaseOrder();
 				pOrder.setOrderDate(order.getDate());
 				pOrder.setOrderId(order.getOrderId());
@@ -132,10 +153,11 @@ public class OrderService {
 				newPurchaseOrdersList.add(pOrder);
 				status = false;
 			}
-				
-	}
-		
+
+		}
+
 		return newPurchaseOrdersList;
-		
-   }
+
+	}
+
 }
