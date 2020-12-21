@@ -8,6 +8,7 @@ public class Comment {
 	private long timestamp;
 	private String productId;
 	private String comment;
+	private String userImageUrl;
 	private Integer rating;
 	public String getShopKeeperId() {
 		return shopKeeperId;
@@ -51,6 +52,12 @@ public class Comment {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	public String getUserImageUrl() {
+		return userImageUrl;
+	}
+	public void setUserImageUrl(String userImageUrl) {
+		this.userImageUrl = userImageUrl;
+	}
 	public Integer getRating() {
 		return rating;
 	}
@@ -58,7 +65,7 @@ public class Comment {
 		this.rating = rating;
 	}
 	public Comment(String shopKeeperId, String userId, String commentId, String userName, long timestamp,
-			String productId, String comment, Integer rating) {
+			String productId, String comment, String userImageUrl, Integer rating) {
 		super();
 		this.shopKeeperId = shopKeeperId;
 		this.userId = userId;
@@ -67,9 +74,12 @@ public class Comment {
 		this.timestamp = timestamp;
 		this.productId = productId;
 		this.comment = comment;
+		this.userImageUrl = userImageUrl;
 		this.rating = rating;
 	}
 	public Comment() {
 		super();
 	}
+	
+	
 }
