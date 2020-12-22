@@ -15,6 +15,8 @@ import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.Query.Direction;
+import com.hardwarevaluewareapi.bean.BuyCartList;
+import com.hardwarevaluewareapi.bean.Cart;
 import com.hardwarevaluewareapi.bean.Order;
 import com.hardwarevaluewareapi.bean.OrderItems;
 import com.hardwarevaluewareapi.bean.Product;
@@ -158,6 +160,23 @@ public class OrderService {
 
 		return newPurchaseOrdersList;
 
+	}
+
+	public BuyCartList setQtyOfEachProduct(BuyCartList list) throws InterruptedException, ExecutionException {
+		List<Cart> cartList = new ArrayList<>();
+		List<Cart> list2 = list.getList();
+		
+		for (Cart cart : list2){
+			String productId = cart.getProductId();
+			Product product = firestore.collection("Product").document(productId).get().get().toObject(Product.class);
+			
+			cart.setQtyInStock(product.getQtyInStock());
+			cartList.add(cart);
+		}
+		
+		list.setList(cartList);
+		
+		return list;
 	}
 
 }

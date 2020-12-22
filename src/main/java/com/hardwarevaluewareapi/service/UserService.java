@@ -10,6 +10,7 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hardwarevaluewareapi.SaveImage;
 import com.hardwarevaluewareapi.bean.User;
 import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
@@ -47,6 +48,12 @@ public class UserService {
 		DocumentReference documentReference = fireStore.collection("User").document(User);
 		User user = documentReference.get().get().toObject(User.class);
 		documentReference.delete();
+		return user;
+	}
+
+	public User updateUserWithoutImage(User user)throws InterruptedException,ExecutionException,ResourceNotFoundException {
+		Firestore firestore = FirestoreClient.getFirestore();
+		firestore.collection("User").document(user.getUserId()).set(user);
 		return user;
 	}
 }

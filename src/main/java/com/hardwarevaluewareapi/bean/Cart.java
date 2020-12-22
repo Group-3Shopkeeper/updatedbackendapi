@@ -7,27 +7,47 @@ public class Cart {
 	private String productId;
 	private String name;
 	private double price;
-	private double qtyOfStock;
+	private int qtyInStock;
 	private String brand;
 	private String imageUrl;
 	private String description;
 	private String shopKeeperId;
+	private int qty;
+	private double total;
 
 	public Cart(String cartId, String userId, String categoryId, String productId, String name, double price,
-			String brand, String imageUrl, String description, String shopKeeperId, double qtyOfStock) {
+			String brand, String imageUrl, String description, String shopKeeperId, int qtyInStock, int qty, double total) {
 		super();
+		this.qty = qty;
+		this.total = total;
 		this.cartId = cartId;
 		this.userId = userId;
 		this.categoryId = categoryId;
 		this.productId = productId;
 		this.name = name;
 		this.price = price;
-		this.qtyOfStock = qtyOfStock;
+		this.qtyInStock = qtyInStock;
 		this.brand = brand;
 		this.imageUrl = imageUrl;
 		this.description = description;
 		this.shopKeeperId = shopKeeperId;
 
+	}
+
+	public int getQty() {
+		return qty;
+	}
+
+	public void setQty(int qty) {
+		this.qty = qty;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
 	}
 
 	public Cart() {
@@ -81,12 +101,12 @@ public class Cart {
 		this.price = price;
 	}
 
-	public double getQtyOfStock() {
-		return qtyOfStock;
+	public int getQtyInStock() {
+		return qtyInStock;
 	}
 
-	public void setQtyOfStock(double qtyOfStock) {
-		this.qtyOfStock = qtyOfStock;
+	public void setQtyInStock(int qtyInStock) {
+		this.qtyInStock = qtyInStock;
 	}
 
 	public String getBrand() {
