@@ -169,6 +169,7 @@ public class OrderService {
 	}
 
 	public BuyCartList setQtyOfEachProduct(BuyCartList list) throws InterruptedException, ExecutionException {
+		Firestore firestore = FirestoreClient.getFirestore();
 		List<Cart> cartList = new ArrayList<>();
 		List<Cart> list2 = list.getList();
 		
