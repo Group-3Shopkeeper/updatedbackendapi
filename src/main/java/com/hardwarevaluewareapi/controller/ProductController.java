@@ -49,6 +49,7 @@ public class ProductController {
 		    product.setQtyInStock(qtyInStock);
 		    product.setShopKeeperId(shopKeeperId);
 		    product.setCategoryId(categoryId);
+		    
 		    Product u = productService.saveProduct(file, product);
 		    return new ResponseEntity<Product>(u,HttpStatus.OK);
 	}
