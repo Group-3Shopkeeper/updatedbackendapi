@@ -25,10 +25,10 @@ import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 
 @Service
 public class OrderService {
-	Firestore firestore = FirestoreClient.getFirestore();
+	
 
 	public Order saveOrders(Order order) throws IOException, Exception, ExecutionException {
-
+		Firestore firestore = FirestoreClient.getFirestore();
 		String orderId = firestore.collection("Order").document().getId().toString();
 		order.setOrderId(orderId);
 
@@ -38,12 +38,14 @@ public class OrderService {
 	}
 
 	public Order getOrderById(String id) throws Exception, Exception {
+		Firestore firestore = FirestoreClient.getFirestore();
 		Order order = firestore.collection("Order").document(id).get().get().toObject(Order.class);
 
 		return order;
 	}
 
 	public Order deleteOrder(String id) throws Exception, Exception {
+		Firestore firestore = FirestoreClient.getFirestore();
 		Order order = firestore.collection("Order").document(id).get().get().toObject(Order.class);
 		if (order != null) {
 
@@ -54,6 +56,7 @@ public class OrderService {
 
 	public java.util.List<Order> getOrders(String currentUserId)
 			throws InterruptedException, ExecutionException, ResourceNotFoundException {
+		Firestore firestore = FirestoreClient.getFirestore();
 		java.util.List<Order> list;
 		CollectionReference collectionReference = firestore.collection("Order");
 
@@ -70,6 +73,7 @@ public class OrderService {
 	}
 
 	public List<Order> getPlacedOrder(String currentUserId) throws InterruptedException, ExecutionException, ResourceNotFoundException {
+		Firestore firestore = FirestoreClient.getFirestore();
 		List<Order> list;
 		CollectionReference collectionReference = firestore.collection("Order");
 		
@@ -88,6 +92,7 @@ public class OrderService {
 
 	public ArrayList<PurchaseOrder> getPurchaseOrders(String shopkeeperId)
 			throws InterruptedException, ExecutionException {
+		Firestore firestore = FirestoreClient.getFirestore();
 		ArrayList<PurchaseOrder> purchaseOrdersList = new ArrayList<PurchaseOrder>();
 		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereEqualTo("shippingStatus", "placed")
 				.get();
@@ -126,6 +131,7 @@ public class OrderService {
 
 	public ArrayList<PurchaseOrder> getNewPurchaseOrders(String shopKeeperId)
 			throws InterruptedException, ExecutionException {
+		Firestore firestore = FirestoreClient.getFirestore();
 		ArrayList<PurchaseOrder> newPurchaseOrdersList = new ArrayList<PurchaseOrder>();
 		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereEqualTo("shippingStatus", "on the way")
 				.get();
