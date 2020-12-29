@@ -50,8 +50,8 @@ public class ProductController {
 		    product.setShopKeeperId(shopKeeperId);
 		    product.setCategoryId(categoryId);
 		    
-		    Product u = productService.saveProduct(file, product);
-		    return new ResponseEntity<Product>(u,HttpStatus.OK);
+		    Product p = productService.saveProduct(file, product);
+		    return new ResponseEntity<Product>(p,HttpStatus.OK);
 	}
 	
 	@PostMapping("/update")
