@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.google.api.services.storage.Storage.BucketAccessControls.List;
+import com.hardwarevaluewareapi.bean.BuyCartList;
+import com.hardwarevaluewareapi.bean.Cart;
 import com.hardwarevaluewareapi.bean.Order;
 import com.hardwarevaluewareapi.bean.PurchaseOrder;
 import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
@@ -62,7 +64,7 @@ public class OrderController {
 		else
 			throw new ResourceNotFoundException("Order not Found");
 
-	}
+	}   
 
 	@GetMapping("/history/{currentUserId}")
 	public ResponseEntity<java.util.List<Order>> getOrders(@PathVariable("currentUserId") String currentUserId)
@@ -94,5 +96,11 @@ public class OrderController {
 		else
 			throw new ResourceNotFoundException("Order not found");
 	}
-
+	
+	@PostMapping("/setQtyOfStock")
+	public ResponseEntity<BuyCartList> setQtyOfEachProduct(@RequestBody BuyCartList list) throws InterruptedException, ExecutionException {
+		BuyCartList list2 = orderService.setQtyOfEachProduct(list);
+		
+		return new ResponseEntity<>(list2,HttpStatus.OK);
+	}
 }

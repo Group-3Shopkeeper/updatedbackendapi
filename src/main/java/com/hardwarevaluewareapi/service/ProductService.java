@@ -1,4 +1,4 @@
-package com.hardwarevaluewareapi.service;
+ package com.hardwarevaluewareapi.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,8 +22,9 @@ import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 @Service
 public class ProductService {
 	
-	Firestore fireStore = FirestoreClient.getFirestore(); 
+	
 	public Product saveProduct(MultipartFile file, Product product) throws IOException {
+		Firestore fireStore = FirestoreClient.getFirestore(); 
 	    String imageUrl = new SaveImage().sendImage(file);
         String productId = fireStore.collection("Product").document().getId().toString();
         product.setImageUrl(imageUrl);
@@ -35,11 +36,13 @@ public class ProductService {
         return product;
 	}
     public Product getProduct(String productId) throws InterruptedException, ExecutionException {
+    	Firestore fireStore = FirestoreClient.getFirestore(); 
     	Product product =  fireStore.collection("Product").document(productId).get().get().toObject(Product.class);
 	   	return product;
 	}
     public Product updateProduct(MultipartFile file, Product product)
 			throws IOException, InterruptedException, Exception {
+    	Firestore fireStore = FirestoreClient.getFirestore(); 
 		String imageUrl = new SaveImage().sendImage(file);
 		java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
 		product.setTimestamp(timestamp.getTime());
@@ -49,6 +52,7 @@ public class ProductService {
 		return product;
 	}
 	public Product updateProductWithoutImage(Product product) throws IOException, InterruptedException, Exception {
+		Firestore fireStore = FirestoreClient.getFirestore(); 
 		java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
 		product.setTimestamp(timestamp.getTime());
 		fireStore.collection("Product").document(product.getProductId()).set(product);
@@ -56,12 +60,14 @@ public class ProductService {
 	}
 
     public Product deleteProduct(String productId) throws InterruptedException, ExecutionException, ResourceNotFoundException {
+    	Firestore fireStore = FirestoreClient.getFirestore(); 
 		DocumentReference documentReference = fireStore.collection("Product").document(productId);
 		Product product = documentReference.get().get().toObject(Product.class);
 		documentReference.delete();
     	return product;
     }
     public List<Product> getDiscountedProduct() throws InterruptedException, ExecutionException {
+    	Firestore fireStore = FirestoreClient.getFirestore(); 
 		ArrayList<Product> pl = new ArrayList<Product>();
 		ApiFuture<QuerySnapshot> apiFuture = fireStore.collection("Product").orderBy("timestamp", Direction.DESCENDING).limit(10).get();
 		QuerySnapshot querySnapshot = apiFuture.get();
@@ -76,6 +82,7 @@ public class ProductService {
 		return pl;
 	}
     public List<Product> getRecentProduct() throws InterruptedException, ExecutionException {
+    	Firestore fireStore = FirestoreClient.getFirestore(); 
     	List<Product> list;
         CollectionReference collectionReference =  fireStore.collection("Product");
 	    Query queryi = collectionReference.orderBy("timestamp", Direction.DESCENDING).limit(10);
@@ -83,6 +90,7 @@ public class ProductService {
     	return list;
     }
     public List<Product> getProductByCategory(String categoryId) throws InterruptedException, ExecutionException {
+    	Firestore fireStore = FirestoreClient.getFirestore(); 
     	List<Product> list;
         CollectionReference collectionReference =  fireStore.collection("Product");
 	    Query queryi = collectionReference.whereEqualTo("categoryId", categoryId);
@@ -90,6 +98,7 @@ public class ProductService {
     	return list;
     }
     public List<Product> getProductByName(String productName) throws InterruptedException, ExecutionException {
+    	Firestore fireStore = FirestoreClient.getFirestore(); 
     	List<Product> list;
         CollectionReference collectionReference =  fireStore.collection("Product");
 	    Query queryi = collectionReference.whereEqualTo("name",productName);
@@ -98,6 +107,7 @@ public class ProductService {
     }
     
 public List<Product> searchProductByName(String shopkeeperId,String name) throws InterruptedException, ExecutionException {
+	Firestore fireStore = FirestoreClient.getFirestore(); 
 		
 		ArrayList<Product> pl = new ArrayList<Product>();
 		ApiFuture<QuerySnapshot> apiFuture = fireStore.collection("Product").whereEqualTo("shopKeeperId",shopkeeperId).get();
@@ -116,6 +126,7 @@ public List<Product> searchProductByName(String shopkeeperId,String name) throws
 		return pl;
 	}
 	public List<Product> getProductByCategoryAndShopkeeper(String categoryId, String shopKeeperId) throws InterruptedException, ExecutionException {
+		Firestore fireStore = FirestoreClient.getFirestore(); 
 		
 		ArrayList<Product> list = new ArrayList<Product>() ;
 		ApiFuture<QuerySnapshot> apiFuture = fireStore.collection("Product").whereEqualTo("shopKeeperId",shopKeeperId).get();

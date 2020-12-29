@@ -32,7 +32,7 @@ public class CommentController {
 		return new ResponseEntity<Comment>(c,HttpStatus.OK);
 	}
 	@GetMapping("/{productId}")
-	public ResponseEntity<List<Comment>> getProductByCategory(@PathVariable String productId) throws ResourceNotFoundException, InterruptedException, ExecutionException {
+	public ResponseEntity<List<Comment>> getProductByComment(@PathVariable String productId) throws ResourceNotFoundException, InterruptedException, ExecutionException {
 		List<Comment> commentList = commentService.getProductByComment(productId);
 		if(commentList!=null)
 		{
@@ -40,7 +40,7 @@ public class CommentController {
 		}
 		else
 		{
-			throw new ResourceNotFoundException("Product Not Found");
+			throw new ResourceNotFoundException("Comment Not Found");
 		}	
 	}
 	@DeleteMapping("/")

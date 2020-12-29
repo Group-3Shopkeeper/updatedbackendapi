@@ -14,15 +14,17 @@ import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 
 @Service
 public class CartService {
-	Firestore fireStore = FirestoreClient.getFirestore(); 
+	
 	
 	public Cart saveCart(Cart cart) throws IOException {
+		Firestore fireStore = FirestoreClient.getFirestore(); 
 		String cartId = fireStore.collection("Cart").document().getId().toString();
 		cart.setCartId(cartId);
         fireStore.collection("Cart").document(cartId).set(cart);
         return cart;
 	}
 	public List<Cart> getCart(String userId) throws InterruptedException, ExecutionException {
+		Firestore fireStore = FirestoreClient.getFirestore(); 
     	List<Cart> list;
         CollectionReference collectionReference =  fireStore.collection("Cart");
 	    Query queryi = collectionReference.whereEqualTo("userId", userId);
@@ -30,6 +32,7 @@ public class CartService {
     	return list;
     }
 	public Cart deleteCart(String id) throws InterruptedException, ExecutionException, ResourceNotFoundException {
+		Firestore fireStore = FirestoreClient.getFirestore(); 
 	    DocumentReference documentReference = fireStore.collection("Cart").document(id);
 		Cart cart = documentReference.get().get().toObject(Cart.class);
 		if(cart != null)
