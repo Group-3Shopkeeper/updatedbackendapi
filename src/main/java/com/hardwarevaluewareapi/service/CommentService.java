@@ -18,9 +18,10 @@ import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 @Service
 public class CommentService {
 	
-	Firestore fireStore = FirestoreClient.getFirestore(); 
+	
 	
 	public Comment saveComment(Comment comment) {
+		Firestore fireStore = FirestoreClient.getFirestore(); 
 		java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
 		comment.setTimestamp(timestamp.getTime());
 		String commentId = fireStore.collection("Product").document().getId().toString();
@@ -32,19 +33,23 @@ public class CommentService {
 	}
 	
 	public List<Comment> getProductByComment(String productId) throws InterruptedException, ExecutionException {
+		Firestore fireStore = FirestoreClient.getFirestore(); 
     	List<Comment> list;
         CollectionReference collectionReference =  fireStore.collection("Product");
 	    Query queryi = collectionReference.document(productId).collection("Comment");
         list = queryi.get().get().toObjects(Comment.class);
     	return list;
     }
+
 	 public Comment deleteComment(Comment comment) throws InterruptedException, ExecutionException, ResourceNotFoundException {
+		 Firestore fireStore = FirestoreClient.getFirestore(); 
 			DocumentReference documentReference = fireStore.collection("Product").document(comment.getProductId()).collection("Comment").document(comment.getCommentId());
 			Comment c= documentReference.get().get().toObject(Comment.class);
 			documentReference.delete();
 	    	return c;
 	    }
 	 public Comment updateComment(Comment comment) throws IOException, InterruptedException, Exception {
+		 Firestore fireStore = FirestoreClient.getFirestore(); 
 			java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
 			comment.setTimestamp(timestamp.getTime());
 			fireStore.collection("Product").document(comment.getProductId()).collection("Comment").document(comment.getCommentId()).set(comment);

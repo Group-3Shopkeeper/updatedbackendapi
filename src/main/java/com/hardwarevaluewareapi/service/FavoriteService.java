@@ -14,23 +14,25 @@ import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 @Service
 public class FavoriteService {
 	
-	Firestore fireStore = FirestoreClient.getFirestore();
+	
 	public Favorite saveFavorite(Favorite favorite) throws IOException {
+		Firestore fireStore = FirestoreClient.getFirestore();
 		String favoriteId = fireStore.collection("Favourite").document().getId().toString();
 		favorite.setFavoriteId(favoriteId);
         fireStore.collection("Favourite").document(favoriteId).set(favorite);
         return favorite;
 	}
 	public List<Favorite> getFavourite(String userId) throws InterruptedException, ExecutionException {
+		Firestore fireStore = FirestoreClient.getFirestore();
     	List<Favorite> list;
-    	Firestore fireStore = FirestoreClient.getFirestore(); 
+    
         CollectionReference collectionReference =  fireStore.collection("Favourite");
 	    Query queryi = collectionReference.whereEqualTo("userId", userId);
         list = queryi.get().get().toObjects(Favorite.class);
     	return list;
     }
 	public Favorite deleteFavorite(String favouriteId) throws InterruptedException, ExecutionException, ResourceNotFoundException {
-		     
+		Firestore fireStore = FirestoreClient.getFirestore(); 
 			DocumentReference documentReference = fireStore.collection("Favourite").document(favouriteId);
 			Favorite favorite = documentReference.get().get().toObject(Favorite.class);
 			if(favorite != null)
@@ -38,7 +40,7 @@ public class FavoriteService {
 	    	return favorite;
 	  }
 	public List<Favorite> getFavoriteByCategory(String currentUserId, String categoryId) throws InterruptedException, ExecutionException {
-		
+		Firestore fireStore = FirestoreClient.getFirestore();
 		List<Favorite> list;
 		CollectionReference collectionReference = fireStore.collection("Favourite");
 		Query query = collectionReference.whereEqualTo("userId", currentUserId);

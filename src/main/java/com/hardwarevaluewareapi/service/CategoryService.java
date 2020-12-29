@@ -19,9 +19,10 @@ import com.hardwarevaluewareapi.image.SendImage;
 @Service
 public class CategoryService {
 
-	Firestore fireStore = FirestoreClient.getFirestore();
+	
 
 	public ArrayList<Category> getCategoryList() throws InterruptedException, ExecutionException {
+		Firestore fireStore = FirestoreClient.getFirestore();
 
 		ArrayList<Category> al = new ArrayList<>();
 		
@@ -39,6 +40,7 @@ public class CategoryService {
 	}
 
 	public Category saveCategory(MultipartFile file, Category c) throws Exception {
+		Firestore fireStore = FirestoreClient.getFirestore();
 		String categoryId = fireStore.collection("Category").document().getId().toString();
 		c.setCategoryId(categoryId);
 		SendImage sendImage = new SendImage();
@@ -50,6 +52,7 @@ public class CategoryService {
 
 	public Category getCategoryById(String categoryId)
 			throws InterruptedException, ExecutionException, ResourceNotFoundException {
+		Firestore fireStore = FirestoreClient.getFirestore();
 
 		Category category = fireStore.collection("Category").document(categoryId).get().get().toObject(Category.class);
 		if (category != null)
