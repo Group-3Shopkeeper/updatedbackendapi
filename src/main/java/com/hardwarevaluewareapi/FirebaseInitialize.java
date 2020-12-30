@@ -15,7 +15,7 @@ public class FirebaseInitialize {
 	@PostConstruct
     public void initialize() {
         try {
-            InputStream serviceAccount = this.getClass().getClassLoader().getResourceAsStream("./serviceAccountKey.json");
+            InputStream serviceAccount = this.getClass().getClassLoader().getResourceAsStream("serviceAccountKey.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://hardwarevalueapi.firebaseio.com")
