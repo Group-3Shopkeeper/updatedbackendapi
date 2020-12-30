@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.hardwarevaluewareapi.bean.Category;
+import com.hardwarevaluewareapi.bean.CategoryWithProductList;
 import com.hardwarevaluewareapi.bean.Product;
 import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 import com.hardwarevaluewareapi.service.ProductService;
@@ -166,6 +169,17 @@ public class ProductController {
 			return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);
 		} else {
 			throw new ResourceNotFoundException("Product Not Found");
+		}
+	}
+	
+	@GetMapping("/categoryWithProductList")
+	public ResponseEntity<List<CategoryWithProductList>> getProductListByCategory(@RequestBody List<Category> list) throws InterruptedException, ExecutionException, ResourceNotFoundException {
+		List<CategoryWithProductList> list2 = productService.getProductListByCategory(list);
+		if (list2 != null) {
+			return new ResponseEntity<List<CategoryWithProductList>>(list2,HttpStatus.OK);
+		}
+		else {
+			throw new ResourceNotFoundException("Not Found");
 		}
 	}
 	

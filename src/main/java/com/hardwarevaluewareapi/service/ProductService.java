@@ -16,6 +16,8 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import com.hardwarevaluewareapi.SaveImage;
+import com.hardwarevaluewareapi.bean.Category;
+import com.hardwarevaluewareapi.bean.CategoryWithProductList;
 import com.hardwarevaluewareapi.bean.Product;
 import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 
@@ -139,5 +141,33 @@ public List<Product> searchProductByName(String shopkeeperId,String name) throws
 			}
 		}
     	return list;
+	}
+	public List<CategoryWithProductList> getProductListByCategory(List<Category> list) throws InterruptedException, ExecutionException {
+		Firestore fireStore = FirestoreClient.getFirestore();
+		List<CategoryWithProductList> categoryWithProductLists = null;
+
+		for (Category category : list) {
+			List<Product> productList = null;
+			CollectionReference collectionReference = fireStore.collection("Product");
+			Query query = collectionReference.whereEqualTo("categoryId", category.getCategoryId());
+			Query query2 = query.orderBy("timestamp", Direction.DESCENDING).limit(10);
+
+			productList = query2.get().get().toObjects(Product.class);
+
+			CategoryWithProductList categoryList = null;
+
+			categoryList.setCategoryId(category.getCategoryId());
+			categoryList.setCategoryName(category.getCategoryName());
+			categoryList.setImageUrl(category.getImageUrl());
+			try {
+				categoryList.setList(productList);
+			} catch (NullPointerException e) {
+
+			}
+
+			categoryWithProductLists.add(categoryList);
+		}
+		return categoryWithProductLists;
+	
 	}
 }
