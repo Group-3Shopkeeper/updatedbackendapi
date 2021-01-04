@@ -31,7 +31,7 @@ public class ShokeeperController {
     		 @RequestParam("token") String token,
     		 @RequestParam("shopKeeperId")String shopKeeperId) throws Exception{
     	 if(file.isEmpty())
-   		  throw new Exception();
+   		  throw new Exception("File not found");
     	 Shopkeeper shopkeeper = new Shopkeeper();
     	 shopkeeper.setContactNumber(contactNumber);
     	 shopkeeper.setShopName(shopName);
