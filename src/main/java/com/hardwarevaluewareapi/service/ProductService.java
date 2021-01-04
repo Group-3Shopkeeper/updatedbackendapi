@@ -23,11 +23,15 @@ import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 public class ProductService {
 	
 	
-	public Product saveProduct(MultipartFile file, Product product) throws IOException {
+	public Product saveProduct(MultipartFile file,MultipartFile file2,MultipartFile file3, Product product) throws IOException {
 		Firestore fireStore = FirestoreClient.getFirestore(); 
-	    String imageUrl = new SaveImage().sendImage(file);
-        String productId = fireStore.collection("Product").document().getId().toString();
+	    String productId = fireStore.collection("Product").document().getId().toString();
+        String imageUrl = new SaveImage().sendImage(file);
         product.setImageUrl(imageUrl);
+        String secondImageUrl = new SaveImage().sendImage(file2);
+        product.setSecondImageUrl(secondImageUrl);
+        String thirdImageurl = new SaveImage().sendImage(file3);
+        product.setThirdImageurl(thirdImageurl);;
         java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
         product.setTimestamp(timestamp.getTime());
         product.setProductId(productId);
