@@ -36,7 +36,7 @@ public class ProductController {
 	}
 		
 	@PostMapping("/")
-	  public ResponseEntity<?> saveProduct(@RequestParam("file") MultipartFile file, @RequestParam("name") String name,@RequestParam("shopKeeperId") String shopKeeperId,@RequestParam("categoryId") String categoryId, @RequestParam("price") double price,@RequestParam("discount") double discount,@RequestParam("brand") String brand,@RequestParam("qtyInStock") int qtyInStock,@RequestParam("description") String description) throws Exception {
+	  public ResponseEntity<?> saveProduct(@RequestParam("file") MultipartFile file,@RequestParam("file2") MultipartFile file2,@RequestParam("file3") MultipartFile file3, @RequestParam("name") String name,@RequestParam("shopKeeperId") String shopKeeperId,@RequestParam("categoryId") String categoryId, @RequestParam("price") double price,@RequestParam("discount") double discount,@RequestParam("brand") String brand,@RequestParam("qtyInStock") int qtyInStock,@RequestParam("description") String description) throws Exception {
 		    if(file.isEmpty())
 			  throw new Exception();
 		    
@@ -50,7 +50,7 @@ public class ProductController {
 		    product.setShopKeeperId(shopKeeperId);
 		    product.setCategoryId(categoryId);
 		    
-		    Product p = productService.saveProduct(file, product);
+		    Product p = productService.saveProduct(file,file2,file3, product);
 		    return new ResponseEntity<Product>(p,HttpStatus.OK);
 	}
 	
