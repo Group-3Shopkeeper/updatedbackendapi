@@ -6,15 +6,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
+import com.hardwarevaluewareapi.SaveImage;
 import com.hardwarevaluewareapi.bean.Shopkeeper;
 import com.hardwarevaluewareapi.image.SendImage;
 
 @Service
 public class ShopkeeperService {
-	      SendImage sendImage=new SendImage();
+	      SaveImage sendImage=new SaveImage();
 		public Shopkeeper saveStore(MultipartFile file,Shopkeeper shopkeeper) throws IOException {
 			  
-			 String imageUrl=sendImage.sendImageCode(file);
+			 String imageUrl=sendImage.sendImage(file);
 			 shopkeeper.setImageUrl(imageUrl);
 			 Firestore firestoredatabase=FirestoreClient.getFirestore();
 			 firestoredatabase.collection("Store").document(shopkeeper.getShopKeeperId()).set(shopkeeper);
@@ -30,7 +31,7 @@ public class ShopkeeperService {
    	
      	public Shopkeeper updateStore(MultipartFile file, Shopkeeper shopkeeper) throws IOException, InterruptedException, Exception {
     		
-			String imageUrl=sendImage.sendImageCode(file);
+			String imageUrl=sendImage.sendImage(file);
 		    shopkeeper.setImageUrl(imageUrl);
 	        Firestore firestoredatabase=FirestoreClient.getFirestore();
 	        firestoredatabase.collection("Store").document(shopkeeper.getShopKeeperId()).set(shopkeeper);

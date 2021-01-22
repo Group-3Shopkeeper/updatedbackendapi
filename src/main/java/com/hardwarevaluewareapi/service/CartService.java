@@ -39,4 +39,22 @@ public class CartService {
 		documentReference.delete();
     	return cart;
     }
+	public List<Cart> deleteAllProductOfUser(String userId) throws InterruptedException, ExecutionException {
+		Firestore firestore = FirestoreClient.getFirestore();
+		List<Cart> cart;
+		CollectionReference collectionReference = firestore.collection("Cart");
+		
+		Query query =  collectionReference.whereEqualTo("userId", userId);
+		
+		cart = query.get().get().toObjects(Cart.class);
+		
+		for(Cart carttype : cart) {
+			DocumentReference documentReference = firestore.collection("Cart").document(carttype.getCartId());
+			Cart delete = documentReference.get().get().toObject(Cart.class);
+			if(delete != null) {
+				documentReference.delete();
+			}
+		}
+		return cart;
+	}
 }
