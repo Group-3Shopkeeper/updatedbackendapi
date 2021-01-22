@@ -23,22 +23,31 @@ import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 public class ProductService {
 	
 	
-	public Product saveProduct(MultipartFile file,MultipartFile file2,MultipartFile file3, Product product) throws IOException {
+	public Product storeProduct(ArrayList<MultipartFile> files,Product p) throws IOException {
 		Firestore fireStore = FirestoreClient.getFirestore(); 
 	    String productId = fireStore.collection("Product").document().getId().toString();
-        String imageUrl = new SaveImage().sendImage(file);
-        product.setImageUrl(imageUrl);
-        String secondImageUrl = new SaveImage().sendImage(file2);
-        product.setSecondImageUrl(secondImageUrl);
-        String thirdImageurl = new SaveImage().sendImage(file3);
-        product.setThirdImageurl(thirdImageurl);;
+	    p.setProductId(productId);
+		if(files.size() > 0) {
+			String firstUrlString = new SaveImage().sendImage(files.get(0));
+			p.setImageUrl(firstUrlString);
+			if(files.size()>=2) {
+				String secondImageUrl=new SaveImage().sendImage(files.get(1));
+				p.setSecondImageUrl(secondImageUrl);
+				if (files.size()==3) {
+					String thirdImageUrl=new SaveImage().sendImage(files.get(2));
+					p.setThirdImageurl(thirdImageUrl);
+				}
+			}
+			
+		}
         java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
-        product.setTimestamp(timestamp.getTime());
-        product.setProductId(productId);
-        
-        fireStore.collection("Product").document(productId).set(product);
-        return product;
+        p.setTimestamp(timestamp.getTime());
+              
+        fireStore.collection("Product").document(productId).set(p);
+        return p;
 	}
+	
+	
     public Product getProduct(String productId) throws InterruptedException, ExecutionException {
     	Firestore fireStore = FirestoreClient.getFirestore(); 
     	Product product =  fireStore.collection("Product").document(productId).get().get().toObject(Product.class);
@@ -51,7 +60,8 @@ public class ProductService {
 		java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
 		product.setTimestamp(timestamp.getTime());
 		product.setProductId(product.getProductId());
-		product.setImageUrl(imageUrl);
+		ArrayList<String> imageUrlList = new ArrayList<>();
+		imageUrlList.add(imageUrl);
 		fireStore.collection("Product").document(product.getProductId()).set(product);
 		return product;
 	}
@@ -144,4 +154,5 @@ public List<Product> searchProductByName(String shopkeeperId,String name) throws
 		}
     	return list;
 	}
+	
 }

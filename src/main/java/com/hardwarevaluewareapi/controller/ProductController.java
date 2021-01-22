@@ -1,4 +1,5 @@
 package com.hardwarevaluewareapi.controller;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.hardwarevaluewareapi.bean.Product;
+
 import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 import com.hardwarevaluewareapi.service.ProductService;
 
@@ -35,7 +37,7 @@ public class ProductController {
 		  return new ResponseEntity<Product>(product,HttpStatus.OK);
 	}
 		
-	@PostMapping("/")
+	/*@PostMapping("/")
 	  public ResponseEntity<?> saveProduct(@RequestParam("file") MultipartFile file,@RequestParam("file2") MultipartFile file2,@RequestParam("file3") MultipartFile file3, @RequestParam("name") String name,@RequestParam("shopKeeperId") String shopKeeperId,@RequestParam("categoryId") String categoryId, @RequestParam("price") double price,@RequestParam("discount") double discount,@RequestParam("brand") String brand,@RequestParam("qtyInStock") int qtyInStock,@RequestParam("description") String description) throws Exception {
 		    if(file.isEmpty())
 			  throw new Exception();
@@ -52,6 +54,34 @@ public class ProductController {
 		    
 		    Product p = productService.saveProduct(file,file2,file3, product);
 		    return new ResponseEntity<Product>(p,HttpStatus.OK);
+	}*/
+	
+	@PostMapping("/")
+	  public ResponseEntity<?> saveProductVariablEntity(@RequestParam("name") String name,
+			  @RequestParam("shopKeeperId") String shopKeeperId,
+			  @RequestParam("categoryId") String categoryId, 
+			  @RequestParam("price") double price,
+			  @RequestParam("discount") double discount,
+			  @RequestParam("brand") String brand,
+			  @RequestParam("qtyInStock") int qtyInStock,
+			  @RequestParam("description") String description, 
+			  @RequestParam("file") ArrayList<MultipartFile> file) throws Exception {
+		    if(file.isEmpty())
+			  throw new Exception();
+		  
+		    Product product = new Product();
+	        product.setBrand(brand);
+		    product.setName(name);
+		    product.setDescription(description);
+		    product.setDiscount(discount);
+		    product.setPrice(price);
+		    product.setQtyInStock(qtyInStock);
+		    product.setShopKeeperId(shopKeeperId);
+		    product.setCategoryId(categoryId);
+		    
+		    Product p = productService.storeProduct(file,product);
+		    return new ResponseEntity<Product>(p,HttpStatus.OK);
+		    
 	}
 	
 	@PostMapping("/update")

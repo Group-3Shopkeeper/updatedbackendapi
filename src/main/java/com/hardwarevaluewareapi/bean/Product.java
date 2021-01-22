@@ -1,5 +1,7 @@
 package com.hardwarevaluewareapi.bean;
 
+import java.util.ArrayList;
+
 public class Product {
 	private String productId;
 	private String categoryId;
@@ -13,7 +15,7 @@ public class Product {
 	private String description;
 	private long timestamp;
 	private String secondImageUrl;
-	private String thirdImageurl;
+	private String thirdImageurl;	
 	public Product() {
 		super();
 		this.productId = productId;
@@ -29,7 +31,9 @@ public class Product {
 		this.thirdImageurl = thirdImageurl;
 		this.description = description;
 		this.timestamp = timestamp;
+	
 	}
+
 	public String getProductId() {
 		return productId;
 	}
@@ -108,7 +112,7 @@ public class Product {
 	public void setThirdImageurl(String thirdImageurl) {
 		this.thirdImageurl = thirdImageurl;
 	}
-	
+
 
 	
 }

@@ -54,4 +54,16 @@ public class CartController {
 		  return new ResponseEntity<Cart>(cart,HttpStatus.OK);
 		  
 	}
+	@DeleteMapping("/deleteAll/{userId}")
+	public ResponseEntity<List<Cart>> deleteAllProductOfUser(@PathVariable String userId) throws InterruptedException, ExecutionException, ResourceNotFoundException{
+		
+		List<Cart> cart = cartservice.deleteAllProductOfUser(userId);
+		if(cart != null) {
+			return new ResponseEntity<List<Cart>>(cart,HttpStatus.OK);
+		}else {
+			throw new ResourceNotFoundException("Cart Not Found");
+		}
+		
+		
+	}
 }
