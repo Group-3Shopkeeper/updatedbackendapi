@@ -28,19 +28,21 @@ public class ProductService {
 	    String productId = fireStore.collection("Product").document().getId().toString();
 	    p.setProductId(productId);
 	    System.out.println("Size of list : "+files.size());
-		if(files.size() > 0) {
+		if(files.size() == 1) {
 			String firstUrlString = new SaveImage().sendImage(files.get(0));
 			p.setImageUrl(firstUrlString);
-			if(files.size()>=1) {
-				String secondImageUrl=new SaveImage().sendImage(files.get(1));
-				p.setSecondImageUrl(secondImageUrl);
-				if (files.size()>=2) {
-					String thirdImageUrl=new SaveImage().sendImage(files.get(2));
-					p.setThirdImageurl(thirdImageUrl);
-				}
-			}
-			
 		}
+		if(files.size()==2) {
+			String secondImageUrl=new SaveImage().sendImage(files.get(1));
+			p.setSecondImageUrl(secondImageUrl);
+		}
+		if (files.size()==3) {
+			String thirdImageUrl=new SaveImage().sendImage(files.get(2));
+			p.setThirdImageurl(thirdImageUrl);
+		}
+			
+			
+		
         java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
         p.setTimestamp(timestamp.getTime());
               
