@@ -23,17 +23,18 @@ import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 public class ProductService {
 	
 	
-	public Product storeProduct(ArrayList<MultipartFile> files,Product p) throws IOException {
+	public Product storeProduct(List<MultipartFile> files,Product p) throws IOException {
 		Firestore fireStore = FirestoreClient.getFirestore(); 
 	    String productId = fireStore.collection("Product").document().getId().toString();
 	    p.setProductId(productId);
+	    System.out.println("Size of list : "+files.size());
 		if(files.size() > 0) {
 			String firstUrlString = new SaveImage().sendImage(files.get(0));
 			p.setImageUrl(firstUrlString);
-			if(files.size()>=2) {
+			if(files.size()>=1) {
 				String secondImageUrl=new SaveImage().sendImage(files.get(1));
 				p.setSecondImageUrl(secondImageUrl);
-				if (files.size()==3) {
+				if (files.size()>=2) {
 					String thirdImageUrl=new SaveImage().sendImage(files.get(2));
 					p.setThirdImageurl(thirdImageUrl);
 				}
