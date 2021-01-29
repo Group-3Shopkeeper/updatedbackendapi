@@ -116,7 +116,7 @@ public class OrderService {
 			}
 			if (status) {
 				PurchaseOrder pOrder = new PurchaseOrder();
-				pOrder.setOrderDate(order.getDate());
+				pOrder.setDate(order.getDate());
 				pOrder.setOrderId(order.getOrderId());
 				pOrder.setTotalAmount(totalAmount);
 				pOrder.setOrderItemList(itemList);
@@ -155,7 +155,7 @@ public class OrderService {
 			}
 			if (status) {
 				PurchaseOrder pOrder = new PurchaseOrder();
-				pOrder.setOrderDate(order.getDate());
+				pOrder.setDate(order.getDate());
 				pOrder.setOrderId(order.getOrderId());
 				pOrder.setTotalAmount(totalAmount);
 				pOrder.setOrderItemList(itemList);
