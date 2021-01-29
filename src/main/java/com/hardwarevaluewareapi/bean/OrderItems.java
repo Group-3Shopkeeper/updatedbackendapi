@@ -4,26 +4,26 @@ public class OrderItems {
 	private String orderItemId;
 	private String productId;
 	private String shopKeeperId;
-	private String productName;
+	private String name;
 	private int qty;
 	private String imageUrl;
 	private double price;
-	private double amount;
+	private double total;
 
 	public OrderItems() {
 	}
 
-	public OrderItems(String orderItemId, String productId, String shopKeeperId, String productName, int qty,
-			String imageUrl, double price, double amount) {
+	public OrderItems(String orderItemId, String productId, String shopKeeperId, String name, int qty,
+			String imageUrl, double price, double total) {
 		super();
 		this.orderItemId = orderItemId;
 		this.productId = productId;
 		this.shopKeeperId = shopKeeperId;
-		this.productName = productName;
+		this.name = name;
 		this.qty = qty;
 		this.imageUrl = imageUrl;
 		this.price = price;
-		this.amount = amount;
+		this.total = total;
 	}
 
 	public String getOrderItemId() {
@@ -51,11 +51,11 @@ public class OrderItems {
 	}
 
 	public String getProductName() {
-		return productName;
+		return name;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setProductName(String name) {
+		this.name = name;
 	}
 
 	public int getQty() {
@@ -82,12 +82,12 @@ public class OrderItems {
 		this.price = price;
 	}
 
-	public double getAmount() {
-		return amount;
+	public double getTotal() {
+		return total;
 	}
 
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public void setTotal(double total) {
+		this.total = total;
 	}
 
 }

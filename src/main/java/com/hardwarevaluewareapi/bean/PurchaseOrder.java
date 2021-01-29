@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 public class PurchaseOrder {
 	private String orderId;
-	private String orderDate;
+	private String date;
 	private double totalAmount;
 	private ArrayList<OrderItems> orderItemList;
-	public PurchaseOrder(String orderId, String orderDate, double totalAmount, ArrayList<OrderItems> orderItemList) {
+	
+	public PurchaseOrder(String orderId, String date, double totalAmount, ArrayList<OrderItems> orderItemList) {
 		super();
 		this.orderId = orderId;
-		this.orderDate = orderDate;
+		this.date = date;
 		this.totalAmount = totalAmount;
 		this.orderItemList = orderItemList;
 	}
@@ -22,10 +23,10 @@ public class PurchaseOrder {
 		this.orderId = orderId;
 	}
 	public String getOrderDate() {
-		return orderDate;
+		return date;
 	}
-	public void setOrderDate(String orderDate) {
-		this.orderDate = orderDate;
+	public void setOrderDate(String date) {
+		this.date = date;
 	}
 	public double getTotalAmount() {
 		return totalAmount;

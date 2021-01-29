@@ -18,6 +18,7 @@ import com.google.cloud.firestore.Query.Direction;
 import com.hardwarevaluewareapi.bean.BuyCartList;
 import com.hardwarevaluewareapi.bean.Cart;
 import com.hardwarevaluewareapi.bean.Order;
+import com.hardwarevaluewareapi.bean.OrderCartList;
 import com.hardwarevaluewareapi.bean.OrderItems;
 import com.hardwarevaluewareapi.bean.Product;
 import com.hardwarevaluewareapi.bean.PurchaseOrder;
@@ -184,6 +185,16 @@ public class OrderService {
 		list.setList(cartList);
 		
 		return list;
+	}
+
+	public OrderCartList saveOrdersCartList(OrderCartList order) {
+		Firestore firestore = FirestoreClient.getFirestore();
+		String orderId = firestore.collection("Order").document().getId().toString();
+		order.setOrderId(orderId);
+		
+		firestore.collection("Order").document(orderId).set(order);
+
+		return order;
 	}
 
 }
