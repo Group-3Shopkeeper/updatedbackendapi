@@ -22,6 +22,7 @@ public class PurchaseOrder {
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
+
 	public String getDate() {
 		return date;
 	}

@@ -65,7 +65,7 @@ public class ProductController {
 			  @RequestParam("brand") String brand,
 			  @RequestParam("qtyInStock") int qtyInStock,
 			  @RequestParam("description") String description, 
-			  @RequestParam("file") ArrayList<MultipartFile> file) throws Exception {
+			  @RequestParam("file") List<MultipartFile> file) throws Exception {
 		    if(file.isEmpty())
 			  throw new Exception();
 		  
