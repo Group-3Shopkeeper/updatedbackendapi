@@ -20,6 +20,7 @@ import com.google.api.services.storage.Storage.BucketAccessControls.List;
 import com.hardwarevaluewareapi.bean.BuyCartList;
 import com.hardwarevaluewareapi.bean.Cart;
 import com.hardwarevaluewareapi.bean.Order;
+import com.hardwarevaluewareapi.bean.OrderCartList;
 import com.hardwarevaluewareapi.bean.PurchaseOrder;
 import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
 import com.hardwarevaluewareapi.service.OrderService;
@@ -34,6 +35,12 @@ public class OrderController {
 	public ResponseEntity<?> createOrder(@RequestBody Order order) throws Exception {
 		Order o = orderService.saveOrders(order);
 		return new ResponseEntity<>(o, HttpStatus.OK);
+	}
+	
+	@PostMapping("/cartList")
+	public ResponseEntity<?> createOrderCartList(@RequestBody OrderCartList order){
+		OrderCartList o = orderService.saveOrdersCartList(order);
+		return new ResponseEntity<>(o,HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
