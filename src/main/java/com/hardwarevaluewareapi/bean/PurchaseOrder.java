@@ -22,10 +22,10 @@ public class PurchaseOrder {
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-	public String getOrderDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setOrderDate(String date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public double getTotalAmount() {

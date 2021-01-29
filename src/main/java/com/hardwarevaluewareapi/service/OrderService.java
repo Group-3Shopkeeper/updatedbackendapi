@@ -95,7 +95,7 @@ public class OrderService {
 			throws InterruptedException, ExecutionException {
 		Firestore firestore = FirestoreClient.getFirestore();
 		ArrayList<PurchaseOrder> purchaseOrdersList = new ArrayList<PurchaseOrder>();
-		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereEqualTo("shippingStatus", "placed")
+		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereEqualTo("shippingStatus", "Placed")
 				.get();
 		QuerySnapshot querySnapshot = apiFuture.get();
 		List<QueryDocumentSnapshot> documentSnapshotList = querySnapshot.getDocuments();
@@ -116,7 +116,7 @@ public class OrderService {
 			}
 			if (status) {
 				PurchaseOrder pOrder = new PurchaseOrder();
-				pOrder.setOrderDate(order.getDate());
+				pOrder.setDate(order.getDate());
 				pOrder.setOrderId(order.getOrderId());
 				pOrder.setTotalAmount(totalAmount);
 				pOrder.setOrderItemList(itemList);
@@ -155,7 +155,7 @@ public class OrderService {
 			}
 			if (status) {
 				PurchaseOrder pOrder = new PurchaseOrder();
-				pOrder.setOrderDate(order.getDate());
+				pOrder.setDate(order.getDate());
 				pOrder.setOrderId(order.getOrderId());
 				pOrder.setTotalAmount(totalAmount);
 				pOrder.setOrderItemList(itemList);
