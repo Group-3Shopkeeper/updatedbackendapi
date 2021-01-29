@@ -50,11 +50,11 @@ public class OrderItems {
 		this.shopKeeperId = shopKeeperId;
 	}
 
-	public String getProductName() {
+	public String getName() {
 		return name;
 	}
 
-	public void setProductName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
