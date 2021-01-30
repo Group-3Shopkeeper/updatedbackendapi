@@ -33,10 +33,16 @@ public class ProductService {
 			p.setImageUrl(firstUrlString);
 		}
 		if(files.size()==2) {
+			String firstUrlString = new SaveImage().sendImage(files.get(0));
+			p.setImageUrl(firstUrlString);
 			String secondImageUrl=new SaveImage().sendImage(files.get(1));
 			p.setSecondImageUrl(secondImageUrl);
 		}
 		if (files.size()==3) {
+			String firstUrlString = new SaveImage().sendImage(files.get(0));
+			p.setImageUrl(firstUrlString);
+			String secondImageUrl=new SaveImage().sendImage(files.get(1));
+			p.setSecondImageUrl(secondImageUrl);
 			String thirdImageUrl=new SaveImage().sendImage(files.get(2));
 			p.setThirdImageurl(thirdImageUrl);
 		}
