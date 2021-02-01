@@ -22,7 +22,7 @@ import com.hardwarevaluewareapi.bean.Product;
 public class SaveImage {
 	public String sendImage(MultipartFile file) throws IOException {
 		  
-		  InputStream serviceAccount=this.getClass().getClassLoader().getResourceAsStream("./serviceAccountKey.json");
+		  InputStream serviceAccount=this.getClass().getClassLoader().getResourceAsStream("serviceAccountKey.json");
 		  Storage storage=StorageOptions.newBuilder().setProjectId("hardwarevalueapi")
 				  .setCredentials(GoogleCredentials.fromStream(serviceAccount)).build().getService();
 		  
