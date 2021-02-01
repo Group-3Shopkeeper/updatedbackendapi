@@ -59,5 +59,13 @@ public class CommentController {
 	   	 Comment c=commentService.updateComment(comment);
 	   	 return new ResponseEntity<Comment>(c,HttpStatus.OK);
     }
-
+	
+	@GetMapping("/{userId}/{productId}")
+	public Comment getUsersCommentOnParticularProduct(@PathVariable String userId, @PathVariable String productId) throws InterruptedException, ExecutionException, ResourceNotFoundException{
+		Comment comment = commentService.getUsersCommentOnParticularProduct(userId,productId);
+		if(comment == null) {
+		 return comment;
+		}
+		return comment;
+	}
 }

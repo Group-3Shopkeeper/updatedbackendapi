@@ -11,6 +11,7 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.Query;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.firestore.v1.Document;
 import com.hardwarevaluewareapi.bean.Comment;
 import com.hardwarevaluewareapi.bean.Product;
 import com.hardwarevaluewareapi.exception.ResourceNotFoundException;
@@ -55,5 +56,17 @@ public class CommentService {
 			fireStore.collection("Product").document(comment.getProductId()).collection("Comment").document(comment.getCommentId()).set(comment);
 			return comment;
 		}
+
+	public Comment getUsersCommentOnParticularProduct(String userId, String productId) throws InterruptedException, ExecutionException {
+		Firestore firestore = FirestoreClient.getFirestore();
+		Comment comm = null;
+		CollectionReference collectionReference =  firestore.collection("Product");
+	    Query queryi = collectionReference.document(productId).collection("Comment").whereEqualTo("userId", userId);
+	    List<Comment> comment = queryi.get().get().toObjects(Comment.class);
+	    if(comment == null) {
+	    	return comm;
+	    } 
+	    return comment.get(0);
+	}
 
 }
