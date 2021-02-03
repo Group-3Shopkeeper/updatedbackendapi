@@ -111,7 +111,7 @@ public class OrderController {
 		return new ResponseEntity<>(list2,HttpStatus.OK);
 	}
 	
-	@PostMapping("cancleOrder")
+	@PostMapping("cancelOrder")
 	public ResponseEntity<Order> cancleOrder(@RequestBody Order order){
 		Order order2 = orderService.cancleOrder(order);
 		
