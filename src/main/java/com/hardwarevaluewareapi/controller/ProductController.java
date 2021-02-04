@@ -199,6 +199,14 @@ public class ProductController {
 		}
 	}
 	
-	
+	@PostMapping("/updateImages")
+	public Product updateImages(@RequestParam("file") List<MultipartFile> files,
+			@RequestParam("urlFirst") String urlFirst,
+			@RequestParam("urlSecond") String urlSecond,
+			@RequestParam("urlThird") String urlThird,
+			@RequestParam("productId") String productId
+			) throws Exception{
+		return productService.updateProductImage(files,productId,urlFirst,urlSecond,urlThird);
+	}
 	
 }

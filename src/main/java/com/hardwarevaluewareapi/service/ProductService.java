@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.google.api.core.ApiFuture;
@@ -162,6 +164,68 @@ public List<Product> searchProductByName(String shopkeeperId,String name) throws
 			}
 		}
     	return list;
+	}
+
+
+	public Product updateProductImage( List<MultipartFile> files, String productId,String urlFirst,String urlSecond,String urlThird) throws IOException, InterruptedException, ExecutionException {
+		Firestore firestore=FirestoreClient.getFirestore();
+		Product p = firestore.collection("Product").document(productId).get().get().toObject(Product.class);
+		if(files.size() == 1) {
+			if(urlFirst.equals("Selected")) {
+				String firstUrlString = new SaveImage().sendImage(files.get(0));
+				p.setImageUrl(firstUrlString);	
+			 }
+			if(urlSecond.equals("Selected")) {
+				String secondImageUrl= new SaveImage().sendImage(files.get(0));
+				p.setSecondImageUrl(secondImageUrl);	
+			 }
+			if(urlThird.equals("Selected")) {
+				String thirdImageUrl = new SaveImage().sendImage(files.get(0));
+				p.setThirdImageurl(thirdImageUrl);	
+			 }
+		}
+		if(files.size()==2) {
+			if(urlFirst.equals("Selected") && urlSecond.equals("Selected")) {
+				String firstUrlString = new SaveImage().sendImage(files.get(0));
+				p.setImageUrl(firstUrlString);	
+
+				String secondImageUrl= new SaveImage().sendImage(files.get(1));
+				p.setSecondImageUrl(secondImageUrl);	
+			 }
+			else if(urlSecond.equals("Selected") && urlThird.equals("Selected")) {
+				String thirdImageUrl = new SaveImage().sendImage(files.get(1));
+				p.setThirdImageurl(thirdImageUrl);	
+			
+				
+				String secondImageUrl= new SaveImage().sendImage(files.get(0));
+				p.setSecondImageUrl(secondImageUrl);	
+			 }
+			else if(urlThird.equals("Selected") && urlFirst.equals("Selected")) {
+				String firstUrlString = new SaveImage().sendImage(files.get(0));
+				p.setImageUrl(firstUrlString);	
+
+				String thirdImageUrl = new SaveImage().sendImage(files.get(1));
+				p.setThirdImageurl(thirdImageUrl);	
+			 }
+			
+		}
+		if (files.size()==3) {
+			if(urlFirst.equals("Selected")) {
+				String firstUrlString = new SaveImage().sendImage(files.get(0));
+				p.setImageUrl(firstUrlString);	
+			 }
+			if(urlSecond.equals("Selected")) {
+				String secondImageUrl= new SaveImage().sendImage(files.get(1));
+				p.setSecondImageUrl(secondImageUrl);	
+			 }
+			if(urlThird.equals("Selected")) {
+				String thirdImageUrl = new SaveImage().sendImage(files.get(2));
+				p.setThirdImageurl(thirdImageUrl);	
+			 }
+			
+		}
+		firestore.collection("Product").document(productId).set(p);
+		return p;
 	}
 	
 }
