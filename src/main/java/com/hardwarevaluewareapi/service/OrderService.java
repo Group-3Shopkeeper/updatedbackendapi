@@ -61,7 +61,7 @@ public class OrderService {
 		java.util.List<Order> list;
 		CollectionReference collectionReference = firestore.collection("Order");
 
-		Query query = collectionReference.whereIn("shippingStatus", Arrays.asList("cancelled", "delivered"));
+		Query query = collectionReference.whereIn("shippingStatus", Arrays.asList("Cancelled", "Delivered"));
 
 		Query query1 = query.whereEqualTo("userId", currentUserId);
 
@@ -194,6 +194,23 @@ public class OrderService {
 		
 		firestore.collection("Order").document(orderId).set(order);
 
+		return order;
+	}
+
+	public Order cancleOrder(Order order) {
+		Firestore firestore = FirestoreClient.getFirestore();
+		order.setShippingStatus("Cancelled");
+		firestore.collection("Order").document(order.getOrderId()).set(order);
+		return order;
+	}
+
+	public Order reOrder(Order order) {
+		Firestore firestore = FirestoreClient.getFirestore();
+		String orderId = firestore.collection("Order").document().getId().toString();
+		order.setOrderId(orderId);
+		
+		firestore.collection("Order").document(orderId).set(order);
+		
 		return order;
 	}
 
