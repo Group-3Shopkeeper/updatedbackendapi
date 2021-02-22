@@ -120,6 +120,7 @@ public class OrderService {
 				pOrder.setOrderId(order.getOrderId());
 				pOrder.setTotalAmount(totalAmount);
 				pOrder.setOrderItemList(itemList);
+				pOrder.setShippingStatus(order.getShippingStatus());
 				purchaseOrdersList.add(pOrder);
 				status = false;
 			}
@@ -212,6 +213,37 @@ public class OrderService {
 		firestore.collection("Order").document(orderId).set(order);
 		
 		return order;
+	}
+	//order history get from shopkeeper 
+	public java.util.List<Order> getOrdersShopkeeper(String currentUserId)
+			throws InterruptedException, ExecutionException, ResourceNotFoundException {
+		Firestore firestore = FirestoreClient.getFirestore();
+
+		ArrayList<Order> aList= new ArrayList<>();
+		ArrayList<OrderItems> newPurchaseOrdersList = new ArrayList<OrderItems>();
+		ApiFuture<QuerySnapshot> apiFuture = firestore.collection("Order").whereIn("shippingStatus", Arrays.asList("Cancelled", "Delivered")).get();
+				
+		QuerySnapshot querySnapshot = apiFuture.get();
+		List<QueryDocumentSnapshot> documentSnapshotList = querySnapshot.getDocuments();
+
+		for (QueryDocumentSnapshot document : documentSnapshotList) {
+			boolean status = false;
+			Order order = document.toObject(Order.class);
+			System.out.println(order.getOrderId());
+			ArrayList<OrderItems> orderItemList = order.getOrderItem();
+			ArrayList<OrderItems> itemList = new ArrayList<>(3);
+			for (OrderItems orderItems : orderItemList) {
+				if (orderItems.getShopKeeperId().equals(currentUserId)) {
+					status = true;
+					itemList.add(orderItems);
+					order.setOrderItem(itemList);
+					aList.add(order);
+				}
+			}
+		}
+
+		return aList;
+
 	}
 
 }

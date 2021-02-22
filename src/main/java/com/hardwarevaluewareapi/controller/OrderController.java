@@ -124,4 +124,15 @@ public class OrderController {
 		
 		return new ResponseEntity<>(order2,HttpStatus.OK);
 	}
+	//order get 
+	@GetMapping("/historyShopkeeper/{currentUserId}")
+	public ResponseEntity<java.util.List<Order>> getOrdersShopkeeper(@PathVariable("currentUserId") String currentUserId)
+			throws Exception {
+		// Order order = orderService.getOrders(currentUserId);
+		java.util.List<Order> orderList = (java.util.List<Order>) orderService.getOrdersShopkeeper(currentUserId);
+		if (orderList != null)
+			return new ResponseEntity<java.util.List<Order>>(orderList, HttpStatus.OK);
+		else
+			throw new ResourceNotFoundException("Order not found");
+	}
 }
