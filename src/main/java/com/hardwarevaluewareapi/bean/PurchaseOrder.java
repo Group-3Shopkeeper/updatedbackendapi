@@ -6,6 +6,7 @@ public class PurchaseOrder {
 	private String orderId;
 	private String date;
 	private double totalAmount;
+	private String shippingStatus;
 	private ArrayList<OrderItems> orderItemList;
 	
 	public PurchaseOrder(String orderId, String date, double totalAmount, ArrayList<OrderItems> orderItemList) {
@@ -16,6 +17,13 @@ public class PurchaseOrder {
 		this.orderItemList = orderItemList;
 	}
 	public PurchaseOrder() {}
+	
+	public String getShippingStatus() {
+		return shippingStatus;
+	}
+	public void setShippingStatus(String shippingStatus) {
+		this.shippingStatus = shippingStatus;
+	}
 	public String getOrderId() {
 		return orderId;
 	}
